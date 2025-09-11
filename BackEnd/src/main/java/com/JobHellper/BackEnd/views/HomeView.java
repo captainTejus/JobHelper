@@ -1,7 +1,7 @@
-package com.JobHellper.BackEnd.views;
+package com.jobhellper.backend.views;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.JobHellper.BackEnd.NumberServices;
+import com.jobhellper.backedn.NumberServices;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
