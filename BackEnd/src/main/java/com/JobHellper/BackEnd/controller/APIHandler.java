@@ -21,6 +21,7 @@ public class APIHandler {
     @Autowired
     public APIHandler(NumberServices productService) {
         this.productService = productService;
+        //check conn
     }
 //  ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
