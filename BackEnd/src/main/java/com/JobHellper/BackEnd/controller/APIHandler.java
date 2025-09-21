@@ -1,5 +1,10 @@
 package com.jobhellper.backend.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,62 +15,25 @@ import com.jobhellper.backend.services.NumberServices;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = "http://localhost:3000")
-// public class ProductController 
-// {@CrossOrigin(origins = "http://localhost:3000"){}
-// @RestController
+@CrossOrigin(origins = "http://localhost:5173") // Vite default port
 public class APIHandler {
 
-     private NumberServices productService;
+    private final NumberServices numberService;
 
     @Autowired
-    public APIHandler(NumberServices productService) {
-        this.productService = productService;
-        //check conn
+    public APIHandler(NumberServices numberService) {
+        this.numberService = numberService;
     }
-//  ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-
-    // Create a new product.
-
-    // @PostMapping("/product")
-    // public ResponseEntity<Product> saveProduct(@RequestBody  product) {
-    //     Product newProduct = productService.saveProduct(product);
-    //     return ResponseEntity.ok(newProduct);
-    // }
-
-    // Get all products.
      
-    @GetMapping("/test/{a}")
-    
-    public int APIreturn(@PathVariable  int a) {
-        return productService.processedNumber(a);
-        // return productService.getAllProducts();
+    @GetMapping("/test/{count}")
+    public ResponseEntity<Map<String, Object>> processNumber(@PathVariable int count) {
+        int result = numberService.processedNumber(count);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Processed count: " + count);
+        response.put("result", result);
+        response.put("count", count);
+           return ResponseEntity.ok(response);
     }
 
-    // // Get a product by ID.
-    
-    // @GetMapping("/products/{id}")
-    // public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-    //     Optional<Product> product = productService.getProductById(id);
-    //     return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    // }
-
-    // Update a product by ID.
-     
-    // @PutMapping("/products/{id}")
-    // public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-    //     Product updatedProduct = productService.updateProduct(id, product);
-    //     return ResponseEntity.ok(updatedProduct);
-    // }
-
-    // Delete a product by ID.
-     
-    // @DeleteMapping("/products/{id}")
-    // public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
-    //     productService.deleteProduct(id);
-    //     return ResponseEntity.ok("Product deleted successfully");
-    // }
-    // public Map<String, String> hello() {
-    //     return Collections.singletonMap("message", "Hello from the backend!");
-    // }
 }
