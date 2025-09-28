@@ -1,4 +1,4 @@
-package com.jobhellper.backend.controller;
+package com.JobHellper.BackEnd.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobhellper.backend.services.NumberServices;
+import com.JobHellper.BackEnd.services.NumberServices;
 
 @RestController
 @RequestMapping("/api/v1")

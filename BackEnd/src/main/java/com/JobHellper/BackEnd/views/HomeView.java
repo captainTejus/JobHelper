@@ -1,7 +1,7 @@
-package com.jobhellper.backend.views;
+package com.JobHellper.BackEnd.views;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.jobhellper.backend.services.NumberServices;
+import com.JobHellper.BackEnd.services.NumberServices;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -31,21 +31,3 @@ add(numberField, button, result);
 
 }
 }
-// import com.vaadin.flow.component.html.H1;
-// import com.vaadin.flow.component.html.Paragraph;
-// import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-// import com.vaadin.flow.router.Route;
-
-
-// @Route("")
-// public class HomeView extends VerticalLayout {
-
-//     public HomeView() {
-
-//         add(new H1("Welcome to your new application"));
-//         add(new Paragraph("This is the home view"));
-
-//         add(new Paragraph("You can edit this view in src\\main\\java\\com\\JobHellper\\BackEnd\\views\\HomeView.java"));
-
-//     }
-// }

@@ -1,4 +1,4 @@
-package com.jobhellper.backend.services;
+package com.JobHellper.BackEnd.services;
 
 import org.springframework.stereotype.Service;
 

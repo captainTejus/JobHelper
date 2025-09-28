@@ -1,11 +1,6 @@
 // FileUploadController.java
-package com.jobhellper.backend.controller;
+package com.JobHellper.BackEnd.controller;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-
-import org.atmosphere.config.service.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,22 +10,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.jobhellper.backend.services.NumberServices;
-import com.jobhellper.backend.services.ResumeScanner;
+import com.JobHellper.BackEnd.services.Resume;
+// import com.JobHellper.BackEnd.services.ResumeScanner;
 
 @RestController
 @RequestMapping("/api/files")
 // Allow requests from the React app's origin (e.g., http://localhost:3000)
 @CrossOrigin(origins = "http://localhost:5173") 
 public class FileUploadController {
-    private final ResumeScanner resumeScanner;
+    private final Resume resume;
 
     @Autowired
-    public FileUploadController(ResumeScanner resumeScanner) {
-        this.resumeScanner = resumeScanner;
+    public FileUploadController(Resume resume) {
+        this.resume = resume;
     }
-    // Define the path where uploaded files will be stored.
-    // NOTE: In a real application, you should make this path configurable.
     // private final String UPLOAD_DIR = "D:\\JobHelpper\\BackEnd\\src\\main\\java\\com\\jobhellper\\backend\\uploadFile";
 
     @PostMapping("/upload")
@@ -41,25 +34,13 @@ public class FileUploadController {
         }
 
         try {
-            resumeScanner.setFile(file);
-            resumeScanner.scanResume();
-            /////////////////////////////////////////////////////////////////////////////////////////////
-//             StringBuilder resultStringBuilder = new StringBuilder();
-//         try (InputStreamReader reader = new InputStreamReader(file.
-// getInputStream(), StandardCharsets.UTF_8)) {
-//             int data = reader.read();
-//             while (data != -1) {
-//                 resultStringBuilder.append((char) data);
-//                 data = reader.read();
-//             }
-//         }
-            // Return a success response
-            return ResponseEntity.ok("File uploaded successfully: " + file.getName());
+            resume.setResume(file);
+            resume.extract();
+
+            return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
 
         } catch (Exception e) {
-            // System.out.println(e.getMessage()+"error");
-            // Return an error response if something goes wrong
-            return ResponseEntity.status(500).body("Could not upload the file: " + e.getMessage());
+          return ResponseEntity.status(500).body("Could not upload the file: " + e.getMessage());
         }
     }
 }
