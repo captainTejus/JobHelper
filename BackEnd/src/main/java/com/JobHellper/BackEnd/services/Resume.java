@@ -1,15 +1,5 @@
 package com.JobHellper.BackEnd.services;
 
-import java.io.IOException;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,7 +71,7 @@ public class Resume {
         
         file=decryptFile(file);
         this.file = file;
-        displayFile(file);
+        // displayFile(file);
         // System.out.println("File received in service: " + file.getOriginalFilename());
     }
     public MultipartFile getFile(){
