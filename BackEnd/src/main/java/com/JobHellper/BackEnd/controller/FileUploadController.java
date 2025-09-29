@@ -1,9 +1,6 @@
 // FileUploadController.java
 package com.JobHellper.BackEnd.controller;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +39,7 @@ public class FileUploadController {
         try {
             resume.setResume(file);
             resume.extract();
+            file=(resume.getFile());
 //             System.out.println("File received in controller: " + new String(file.
 // getBytes()));
         try {
@@ -50,9 +48,9 @@ public class FileUploadController {
             logger.info("File size: {} bytes", file.getSize());
 
             // Read and print file content (assuming it's a text file)
-            String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
+            // String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
             // logger.info("File Content:\n{}", fileContent);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

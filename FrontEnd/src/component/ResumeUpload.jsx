@@ -13,7 +13,7 @@ function ResumeUpload() {
             reader.onload = async (e) => {
                 try {
                     let encrypted;
-                    if (true) {
+                    if (false) {
                         const binaryStr = e.target.result;
                         const wordArray = CryptoJS.lib.WordArray.create(binaryStr);
                         encrypted = CryptoJS.AES.encrypt(wordArray, ENCRYPTION_KEY).toString();
@@ -54,7 +54,7 @@ function ResumeUpload() {
 
             const formData = new FormData();
             formData.append('file', encryptedFile);
-            formData.append('originalFileName', selectedFile.name);
+            // formData.append('originalFileName', selectedFile.name);
 
             const response = await axios.post("http://localhost:8081/api/files/upload", formData, {
                 headers: {
