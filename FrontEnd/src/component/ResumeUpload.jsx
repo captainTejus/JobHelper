@@ -1,52 +1,81 @@
 import axios from "axios";
 import React, { useState } from "react";
-// console.log("cha;a");
+import CryptoJS from 'crypto-js';
+
 function ResumeUpload() {
-		const [selectedFile, setSelectedFile] = useState(null);
-  		const [message, setMessage] = useState('');
-		
-		
-		const encryptFile = (text) => {
-			// console.log("encrypt chala");
-		return text;
-		};
-  		// Handler for file selection
-  		const handleFileChange = (event) => {
-			// console.log("cha;a");
-    		setSelectedFile(encryptFile(event.target.files[0]));
-  		};
+    const ENCRYPTION_KEY = 'your-secret-key-123';
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [message, setMessage] = useState('');
+    
+    const encryptFile = async(file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    let encrypted;
+                    if (true) {
+                        const binaryStr = e.target.result;
+                        const wordArray = CryptoJS.lib.WordArray.create(binaryStr);
+                        encrypted = CryptoJS.AES.encrypt(wordArray, ENCRYPTION_KEY).toString();
+                    } else {
+                        encrypted = e.target.result;  // unencrypted version
+                    }
+                    
+                    // Create a new Blob with the encrypted data
+                    const encryptedBlob = new Blob([encrypted], { type: 'text/plain' });
+                    const encryptedFile = new File([encryptedBlob], file.name + '.encrypted', {
+                        type: 'application/octet-stream'
+                    });
+                    resolve(encryptedFile);
+                } catch (error) {
+                    console.error('Encryption failed:', error);
+                    reject(error);
+                }
+            };
+            reader.onerror = (error) => reject(error);
+            reader.readAsArrayBuffer(file);
+        });
+    };
 
-  		// Handler for file upload
-  		const handleUpload = async () => {
-  		if (!selectedFile) {
-      		setMessage('Please select a file first!');
-      		return;
-    	}
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]);
+        setMessage(''); // Clear any previous messages
+    };
 
-    		// Create a FormData object
-    	const formData = new FormData();
-    	// @RequestParam name in your Spring Boot controller.
-    	formData.append('file', selectedFile);
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setMessage('Please select a file first!');
+            return;
+        }
 
-   		try {
-    	// Send the POST request to the Spring Boot backend
-    	const response = await axios.post("http://localhost:8081/api/files/upload", formData, {
-        		headers: {
-          		'Content-Type': 'multipart/form-data',
-        	},
-    		});
-    		setMessage("Respone === "+(response.data)); // Display success message from server
-    	} catch (error) {
-     	setMessage('File upload failed: ' + (error.response?.data || error.message));
-    	}
-	};
-	return (
-    	<div>
-      	<h2>File Upload</h2>
-      	<input type="file" onChange={handleFileChange} />
-      	<button onClick={handleUpload}>Upload</button>
-      	{message && <p>{message}</p>}
-    	</div>
-	);
+        try {
+            setMessage('Encrypting and uploading file...');
+            const encryptedFile = await encryptFile(selectedFile);
+
+            const formData = new FormData();
+            formData.append('file', encryptedFile);
+            formData.append('originalFileName', selectedFile.name);
+
+            const response = await axios.post("http://localhost:8081/api/files/upload", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setMessage(`File uploaded successfully! Server response: ${response.data}`);
+        } catch (error) {
+            console.error('Upload failed:', error);
+            setMessage('File upload failed: ' + (error.response?.data || error.message));
+        }
+    };
+
+    return (
+        <div>
+            <h2>File Upload</h2>
+            <input type="file" onChange={handleFileChange} />
+            <button onClick={handleUpload}>Upload</button>
+            {message && <p>{message}</p>}
+        </div>
+    );
 }
+
 export default ResumeUpload;

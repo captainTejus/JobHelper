@@ -1,6 +1,11 @@
 // FileUploadController.java
 package com.JobHellper.BackEnd.controller;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +24,7 @@ import com.JobHellper.BackEnd.services.Resume;
 @CrossOrigin(origins = "http://localhost:5173") 
 public class FileUploadController {
     private final Resume resume;
+  private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     @Autowired
     public FileUploadController(Resume resume) {
@@ -36,6 +42,19 @@ public class FileUploadController {
         try {
             resume.setResume(file);
             resume.extract();
+//             System.out.println("File received in controller: " + new String(file.
+// getBytes()));
+        try {
+           logger.info("Received file: {}", file.getOriginalFilename());
+            logger.info("File content type: {}", file.getContentType());
+            logger.info("File size: {} bytes", file.getSize());
+
+            // Read and print file content (assuming it's a text file)
+            String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
+            // logger.info("File Content:\n{}", fileContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
             return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
 
