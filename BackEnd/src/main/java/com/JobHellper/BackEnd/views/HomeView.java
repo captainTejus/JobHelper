@@ -1,0 +1,33 @@
+package com.JobHellper.BackEnd.views;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.JobHellper.BackEnd.services.NumberServices;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.router.Route;
+@Route("")
+
+public class HomeView extends VerticalLayout {
+    public HomeView(@Autowired NumberServices numberServices){
+    NumberField numberField = new NumberField("Number");
+    Button button = new Button("Check");
+
+    Paragraph result = new Paragraph();
+
+button.addClickListener(
+    click -> {
+        if (numberField.getValue() != null) {
+                int processedNumber=numberServices.processedNumber(numberField.getValue().intValue());
+                result.setText("Processed Number : "+String.valueOf(processedNumber));
+            } else {
+                result.setText("Please enter a number");
+            }
+    }
+);
+
+add(numberField, button, result);
+
+}
+}
